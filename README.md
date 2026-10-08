@@ -1,55 +1,65 @@
-<!-- <p align="center">
-   <img alt="is-a.dev Banner" src="https://raw.githubusercontent.com/is-a-dev/register/main/media/banner.png">
-</p> -->
+# 888 Sport Forwarder v7 — EXTREME
+**Prepared by Abuta**
 
-<p align="center">
-   <img height="350" alt="is-a.dev Banner" src="https://raw.githubusercontent.com/is-a-dev/register/main/media/banner.png">
-</p>
+## Deploy
 
-<p align="center">
-   <img alt="Domains" src="https://img.shields.io/github/directory-file-count/is-a-dev/register/domains?color=5c46eb&label=domains&style=for-the-badge">
-   <img alt="Open Pull Requests" src="https://img.shields.io/github/issues-raw/is-a-dev/register?color=5c46eb&label=issues&style=for-the-badge">
-   <img alt="Open Issues" src="https://img.shields.io/github/issues-pr-raw/is-a-dev/register?color=5c46eb&label=pull%20requests&style=for-the-badge">
-   <br>
-</p>
+```bash
+pip install -r requirements.txt
+python forwarder.py
+```
 
-<h1 align="center">is-a.dev</h1>
+First run: enter your phone number + OTP when prompted. Session saved to `session.session`.
 
-<p align="center"><strong>is-a.dev</strong> is a service that allows developers to get a sweet-looking <code>.is-a.dev</code> subdomain for their personal websites.</p>
+## New Features in v7
 
----
+| Feature | Flag | Default |
+|---------|------|---------|
+| Unicode font styles (bold/italic/mono) | `TEXT_FONT_STYLE` | `"bold"` |
+| Compact time display (· HH:MM) | `TIME_COMPACT` | `True` |
+| Media fallback caption (no unnamed) | `MEDIA_NO_CAPTION_TEXT` | auto |
+| Default image on text-only msgs | `ATTACH_DEFAULT_IMAGE` | `False` |
+| Smart scheduler (6 daily slots) | `SMART_SCHEDULE_ENABLED` | `True` |
+| Content enrichment (🔴 LIVE, sport emoji) | `ENRICH_ENABLED` | `True` |
+| Auto thread reply | `AUTO_THREAD_REPLY_ENABLED` | `False` |
+| Media dedup by file hash | `DEDUP_MEDIA_ENABLED` | `True` |
+| Heartbeat loop (30 min) | `HEARTBEAT_ENABLED` | `True` |
+| CSV analytics per message | `ANALYTICS_ENABLED` | `True` |
+| Link preview control | `LINK_PREVIEW_ENABLED` | `False` |
+| Pause/resume without restart | `/pause` `/resume` | — |
 
-## Announcements
-Please join our [Discord server](https://discord.gg/is-a-dev-830872854677422150) for announcements, service updates, and downtime notifications regarding the service.
+## Commands (send in Saved Messages)
 
-Not all announcements are posted on GitHub[^1], however they will always be posted in our Discord server.
+```
+/ping          — uptime + key stats
+/stats         — full stats table
+/status        — live dashboard with sparklines
+/queue         — DLQ pending messages
+/pause         — stop forwarding (no restart needed)
+/resume        — resume forwarding
+/reload        — reload mapping + hotconfig
+/fontset bold|italic|mono|normal
+/timefmt compact|full
+/testmsg       — send branded test to Saved Messages
+/analytics     — analytics event count
+```
 
-[^1]: We only post announcements on GitHub in the case of a serious incident, which you'll see at the top of this README.
+## Hot Config
 
-# Register
-> If you want a visual guide, check out [this blog post](https://blog.wharrison.com.au/2024/07/is-a-dev/).
+Edit `hotconfig.json` and send `/reload` — no restart needed.
 
-- [Fork](https://github.com/is-a-dev/register/fork) the repository.
-- Follow the instructions on our [documentation](https://docs.is-a.dev).
-- Once you open your pull request (PR), it will be reviewed. *Keep an eye on it in case changes are needed!*
-   - If changes have been requested, please make the specified changes otherwise **you will be rejected**.
-- Once your PR is merged, your DNS records should be published with-in a few minutes.
-- Enjoy your new `.is-a.dev` subdomain! Please consider leaving a star ⭐️ to help support us!
+## Boost Sessions
 
-## Spam Pull Requests
-With the recent rising of invalid PRs, including PRs generated with AI, we reserve the right to:
+Place session files (`boost1.session` … `boost5.session`) beside the script. Login each manually once, then the bot manages them automatically.
 
-- Close these PRs without explanation.
-- Block or limit the author's ability to interact with is-a.dev's repositories and resources.
-- Remove any existing domains owned by the author if connected to TOS-violating content.
+## Files Created at Runtime
 
-## Report Abuse
-If you find any subdomains being abused or breaking our [ToS](https://is-a.dev/terms), please report them by [creating an issue](https://github.com/is-a-dev/register/issues/new?assignees=&labels=report-abuse&projects=&template=report-abuse.md&title=Report+abuse) with relevant evidence.
-
----
-
-We are supported by Cloudflare's [Project Alexandria](https://www.cloudflare.com/lp/project-alexandria) sponsorship program, we would not be able to operate without their help!
-
-<a href="https://www.cloudflare.com">
-   <img alt="Cloudflare Logo" src="https://raw.githubusercontent.com/is-a-dev/register/main/media/cloudflare.png" height="48">
-</a>
+| File | Purpose |
+|------|---------|
+| `session.session` | Main account session |
+| `mapping.json` | src→tgt message ID map |
+| `bandit.json` | Header A/B test state |
+| `dlq.db` | Failed-message retry queue |
+| `backfill_state.json` | Backfill checkpoint |
+| `growth.csv` | Member count history |
+| `analytics.csv` | Per-message analytics |
+| `forwarder.log` | Full log |
